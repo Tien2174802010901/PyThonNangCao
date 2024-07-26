@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm Kiếm Phim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 1500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: 500;
+        }
+
+        input[type="text"], select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #888;
+            font-size: 16px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tìm Kiếm Phim</h1>
+        <form method="post" action="{{ url_for('search') }}">
+            <label for="search_term">Thuật Ngữ Tìm Kiếm :</label>
+            <input type="text" id="search_term" name="search_term" value="{{ search_term }}">
+
+            <label for="search_type">Tìm Kiếm Theo :</label>
+            <select id="search_type" name="search_type">
+                <option value="title" {% if search_type == 'title' %}selected{% endif %}>Tên Phim</option>
+                <option value="id" {% if search_type == 'id' %}selected{% endif %}>ID</option>
+            </select>
+
+            <button type="submit">Tìm Kiếm</button>
+        </form>
+
+        {% if data %}
+            <form method="post" action="{{ url_for('details') }}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lựa Chọn</th>
+                            <th>Thể Loại</th>
+                            <th>ID</th>
+                            <th>Ngôn Ngữ</th>
+                            <th>Ngày Phát Hành</th>
+                            <th>Thời Lượng Phim</th>
+                            <th>Tên Phim</th>
+                            <th>Điểm Số</th>
+                            <th>Đạo Diễn</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data %}
+                        <tr>
+                            <td><input type="checkbox" name="selected" value="{{ row[1] }}"></td>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                            <td>{{ row[3] }}</td>
+                            <td>{{ row[4] }}</td>
+                            <td>{{ row[5] }}</td>
+                            <td>{{ row[6] }}</td>
+                            <td>{{ row[7] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit">Lưu Lựa Chọn</button>
+            </form>
+        {% else %}
+            <p class="no-results">không Có Kết Quả Nào Được Tìm Thấy.</p>
+        {% endif %}
+        <a href="{{ url_for('index') }}" class="button">Quay Lại Trang Chủ</a>
+    </div>
+</body>
+</html>

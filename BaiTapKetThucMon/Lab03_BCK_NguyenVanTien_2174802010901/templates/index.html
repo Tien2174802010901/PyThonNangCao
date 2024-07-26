@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 class="mb-4" style="width: 100%;">Danh Sách Phim</h1>
+<table class="table table-bordered" style="width: 100%;">
+    <thead>
+        <tr style="width: 100%;">
+            <th style="width: 12%;">Thể Loại</th>
+            <th style="width: 5%;">ID</th>
+            <th style="width: 10%;">Ngôn Ngữ</th>
+            <th style="width: 11%;">Ngày Phát Hành</th>
+            <th style="width: 11%;">Thời Lượng Phim</th>
+            <th style="width: 15%;">Tên Phim</th>
+            <th style="width: 10%;">Điểm Số</th>
+            <th style="width: 15%;">Đạo Diễn</th>
+            <th style="width: 15%;">Tùy Chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for row in data %}
+        <tr style="width: 100%;">
+            <td style="width: 12%;">{{ row[0] }}</td>
+            <td style="width: 5%;">{{ row[1] }}</td>
+            <td style="width: 10%;">{{ row[2] }}</td>
+            <td style="width: 12%;">{{ row[3] }}</td>
+            <td style="width: 12%;">{{ row[4] }}</td>
+            <td style="width: 15%;">{{ row[5] }}</td>
+            <td style="width: 10%;">{{ row[6] }}</td>
+            <td style="width: 15%;">{{ row[7] }}</td>
+            <td style="width: 15%;">
+                <form method="post" action="{{ url_for('delete') }}">
+                    <input type="hidden" name="id" value="{{ row[1] }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Xóa Dữ Liệu</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
